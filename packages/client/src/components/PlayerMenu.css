@@ -1,0 +1,14 @@
+.player__container {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+
+.player__avatar {
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border-radius: 50%;
+  position: relative;
+  border: 0px solid transparent;
+}

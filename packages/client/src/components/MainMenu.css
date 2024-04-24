@@ -1,0 +1,20 @@
+.MainMenu {
+    display: flex;
+    height: 100vh;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.buttons__container {
+    display: flex; /* Make buttons container a flexbox as well */
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center;
+    width: 150px;
+}
+
+.players__container {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
