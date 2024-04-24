@@ -5,7 +5,8 @@
   "description": "A starter project using react and colyseus",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm run --filter \"./packages/**\" --parallel dev",
+    "build": "cd packages/client && npm run build && cd ../server && npm run build",
+    "dev": "pnpm run --filter \"./packages/**\" --parallel dev:win",
     "tunnel": "cloudflared tunnel --url http://localhost:3000"
   },
   "author": "",

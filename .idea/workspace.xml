@@ -4,63 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3695db25-00ff-495d-927d-1c882bff7518" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/TumbleTower.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/public/block-T-blue.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/App.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/Block.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/GameScreen.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/GameScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/LoadingScreen.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/LoadingScreen.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/MainMenu.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/MainMenu.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/Player.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/Player.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/PlayerMenu.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/PlayerMenu.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/ReadyUp.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/ReadyUp.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/StartButton.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/components/StartButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/decomp.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/discordSdk.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/hooks/useAuthenticatedContext.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/hooks/usePlayers.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/images/favicon.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/main.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/types.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/utils/Converters.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/utils/blockVerts.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/utils/getRandomBlock.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/utils/getUserAvatarUrl.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/utils/getUserDisplayName.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/src/vite-env.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/client/vite.config.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/server/environment.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/server/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/server/src/app.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/server/src/entities/Player.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/server/src/entities/State.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/server/src/rooms/StateHandlerRoom.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/server/src/shared/Constants.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/server/src/shared/hello.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/packages/server/tsconfig.json" afterDir="false" />
-    </list>
+    <list default="true" id="3695db25-00ff-495d-927d-1c882bff7518" name="Changes" comment="setup" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -85,7 +29,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Users/Tommy Ford/PyCharmProjects/TumbleTower/packages/client",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -119,11 +63,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1713959820353</updated>
-      <workItem from="1713959831128" duration="1112000" />
+      <workItem from="1713959831128" duration="2823000" />
     </task>
+    <task id="LOCAL-00001" summary="setup">
+      <option name="closed" value="true" />
+      <created>1713961596636</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1713961596636</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="setup" />
+    <option name="LAST_COMMIT_MESSAGE" value="setup" />
   </component>
 </project>
