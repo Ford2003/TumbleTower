@@ -23,7 +23,7 @@ jobs:
         run: npm run build # The build command of your project
 
       - name: Copy client dist to server dist
-        run: cp -r packages/client/dist packages/server/dist
+        run: cp -r packages/client/dist/* packages/server/dist
 
       - name: Push Build
         uses: s0/git-publish-subdir-action@develop
