@@ -44,7 +44,6 @@ export function Game() {
       // Create identical block in same location as static.
       const newBlock = Block(data.block, true, mockEngine, data.block.id);
       Render.lookAt(render, [newBlock, floor], {x: 50, y: 50}, true);
-      console.log(`Client: Block Created, id ${data.block.id}, id: ${newBlock.id}`);
     });
     // Set up listener for block updates.
     authContext.room.onMessage(
