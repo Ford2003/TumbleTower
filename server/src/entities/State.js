@@ -28,6 +28,7 @@ class State extends schema_1.Schema {
         this.channelId = attributes.channelId;
         this._calculateBodyDeltas = this._calculateBodyDeltas.bind(this);
         this.applyPlayerMovement = this.applyPlayerMovement.bind(this);
+        this._handleCollisions = this._handleCollisions.bind(this);
     }
     _getPlayer(sessionId) {
         return Array.from(this.players.values()).find((p) => p.sessionId === sessionId);
@@ -54,7 +55,6 @@ class State extends schema_1.Schema {
         // Get random data for the block
         const blockData = (0, getRandomBlock_1.getRandomBlock)(x, y);
         const block = (0, Block_1.Block)(blockData, false, this.engine);
-        console.log('newBlock: position ', block.position, 'ID: ', block.id);
         this.blockPositions.set(block.id, { x: blockData.x, y: blockData.y, rotation: blockData.rotation });
         // Create IBlockData for storage in controlledBlocks
         return Object.assign(Object.assign({}, blockData), { id: block.id });
@@ -87,7 +87,11 @@ class State extends schema_1.Schema {
     _calculateBodyDeltas(event) {
         const updates = [];
         for (const body of this.engine.world.bodies) {
-            //console.log(body.position);
+            // remove the body if it is below the floor.
+            if (body.position.y > 500) {
+                matter_js_1.World.remove(this.engine.world, body);
+                continue;
+            }
             // saved block position
             const blockPosition = this.blockPositions.get(body.id);
             // calculate changes in stored positions and current body positions.
@@ -160,6 +164,31 @@ class State extends schema_1.Schema {
                 matter_js_1.Body.translate(block, inputDelta);
             }
         }
+        // Apply gravity to all blocks that are not being controlled.
+        for (const block of this.engine.world.bodies) {
+            if (!this.playerInputDelta.has(block.id)) {
+                // TODO: Update gravity scalar to be better tuned.
+                matter_js_1.Body.applyForce(block, block.position, { x: 0, y: 0.0005 * block.mass });
+            }
+        }
+    }
+    _handleCollisions(event) {
+        const newBlocksData = [];
+        // check if a controlled block is in the collisions:
+        for (const pair of event.pairs) {
+            for (const [sessionId, blockId] of this.controlledBlocks) {
+                if (pair.bodyA.id === blockId || pair.bodyB.id === blockId) {
+                    const oldBlock = pair.bodyA.id === blockId ? pair.bodyA : pair.bodyB;
+                    const newBlock = this._newBlock(75, 0);
+                    this.controlledBlocks.set(sessionId, newBlock.id);
+                    newBlocksData.push(newBlock);
+                    // Move the player input delta to the new block.
+                    this.playerInputDelta.set(newBlock.id, this.playerInputDelta.get(blockId));
+                    this.playerInputDelta.delete(blockId);
+                }
+            }
+        }
+        return newBlocksData;
     }
 }
 exports.State = State;

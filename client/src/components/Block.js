@@ -64,14 +64,14 @@ function Block({ type, x, y, rotation, colour }, isStatic, engine, id) {
         isStatic: isStatic,
         frictionAir: 0,
         id: id,
-        friction: 0,
+        friction: 0.2,
         render: {
             fillStyle: colour,
         },
-    }, false, 0.01, 10, 0.01);
+    }, true, 0.01, 5, 0.01);
     matter_js_1.Body.rotate(blockBody, rotation);
     matter_js_1.Body.setVelocity(blockBody, { x: 0, y: 1 });
-    console.log(`Block Body: ${blockBody}, rotation: ${rotation}, id: ${blockBody.id}, id: ${id}`);
+    console.log(`Block Body: ${blockBody}, position: ${blockBody.position}, rotation: ${rotation}, id: ${blockBody.id}`);
     matter_js_1.Composite.add(engine.world, blockBody);
     return blockBody;
 }

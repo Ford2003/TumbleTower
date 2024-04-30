@@ -28,6 +28,8 @@ class StateHandlerRoom extends colyseus_1.Room {
             }
             this.OnEngineUpdate = this.OnEngineUpdate.bind(this);
             matter_js_1.Events.on(this.state.engine, 'afterUpdate', this.OnEngineUpdate);
+            this.onEngineCollision = this.onEngineCollision.bind(this);
+            matter_js_1.Events.on(this.state.engine, 'collisionStart', this.onEngineCollision);
         });
         this.onMessage('player-input', (client, message) => {
             this.state.setPlayerInput(client.sessionId, message);
@@ -39,6 +41,13 @@ class StateHandlerRoom extends colyseus_1.Room {
         // Broadcast the updates to all clients, in chunks of 20 blocks.
         for (let i = 0; i < updates.length; i += 20) {
             this.broadcast('block-updates', updates.slice(i, i + 20));
+        }
+    }
+    onEngineCollision(event) {
+        const newBlocks = this.state._handleCollisions(event);
+        // For each block created, broadcast the block to all clients.
+        for (const block of newBlocks) {
+            this.broadcast('block-created', { block: block });
         }
     }
     onAuth(_client, _options, _req) {
