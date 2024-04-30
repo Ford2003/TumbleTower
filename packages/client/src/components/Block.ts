@@ -51,19 +51,19 @@ export function Block({type, x, y, rotation, colour}: IBlock, isStatic: boolean,
       isStatic: isStatic,
       frictionAir: 0,
       id: id,
-      friction: 0,
+      friction: 0.2,
       render: {
         fillStyle: colour,
       },
     },
-    false,
+    true,
     0.01,
-    10,
+    5,
     0.01
   );
   Body.rotate(blockBody, rotation);
   Body.setVelocity(blockBody, {x: 0, y: 1});
-  console.log(`Block Body: ${blockBody}, rotation: ${rotation}, id: ${blockBody.id}, id: ${id}`);
+  console.log(`Block Body: ${blockBody}, position: ${blockBody.position}, rotation: ${rotation}, id: ${blockBody.id}`);
   Composite.add(engine.world, blockBody);
 
   return blockBody;

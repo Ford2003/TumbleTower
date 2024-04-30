@@ -1,7 +1,7 @@
 import {Room, Client} from 'colyseus';
 import {TPlayerOptions} from '../entities/Player';
 import {State, IState} from '../entities/State';
-import {Events, IEvent, Engine, Runner} from 'matter-js';
+import {Events, IEvent, Engine, Runner, IEventCollision} from 'matter-js';
 
 export class StateHandlerRoom extends Room<State> {
   maxClients = 1000;
@@ -27,6 +27,8 @@ export class StateHandlerRoom extends Room<State> {
       }
       this.OnEngineUpdate = this.OnEngineUpdate.bind(this);
       Events.on(this.state.engine, 'afterUpdate', this.OnEngineUpdate);
+      this.onEngineCollision = this.onEngineCollision.bind(this);
+      Events.on(this.state.engine, 'collisionStart', this.onEngineCollision);
     });
 
     this.onMessage('player-input', (client, message: string) => {
@@ -40,6 +42,14 @@ export class StateHandlerRoom extends Room<State> {
     // Broadcast the updates to all clients, in chunks of 20 blocks.
     for (let i = 0; i < updates.length; i += 20) {
       this.broadcast('block-updates', updates.slice(i, i + 20));
+    }
+  }
+
+  onEngineCollision(event: IEventCollision<Engine>) {
+    const newBlocks = this.state._handleCollisions(event);
+    // For each block created, broadcast the block to all clients.
+    for (const block of newBlocks) {
+      this.broadcast('block-created', {block: block});
     }
   }
 
