@@ -8,13 +8,16 @@ import {IBlockData} from '../../../server/src/shared/Constants';
 import {Block} from './Block';
 
 export function Game() {
+  // React References
   const canvasRef = React.useRef(null);
   const boxRef = React.useRef(null);
+  // React States
   const [moveLeftPressed, setMoveLeftPressed] = React.useState(false);
   const [moveRightPressed, setMoveRightPressed] = React.useState(false);
-  const players = usePlayers();
+  // React Contexts.
   const authContext = useAuthenticatedContext();
-  // On page load set up client Mock Engine and renderer.
+
+  // On page load set up client: Mock Engine + renderer + floors + listeners.
   React.useEffect(() => {
     const mockEngine = Engine.create();
     mockEngine.gravity.y = 0;
@@ -30,6 +33,7 @@ export function Game() {
       },
     });
     Render.run(render);
+    // TODO: Create platforms for each player, rather than a single long floor.
     const floor = Bodies.rectangle(150, 300, 300, 20, {
       isStatic: true,
       render: {
@@ -58,7 +62,8 @@ export function Game() {
         }
       }
     );
-    // Set up input listeners for player movement.
+    // Set up input listeners for player movement. Send a single event to the server for movement-start and
+    // movement end.
     document.addEventListener('keydown', (event) => {
       if ((event.key === 'ArrowLeft' || event.key === 'a') && !moveLeftPressed) {
         setMoveLeftPressed(true);
@@ -81,9 +86,9 @@ export function Game() {
     });
   }, []);
 
+  // Click event callback for both left and right click to rotate the block.
   const rotateBlock = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    console.log(event.button, event.type);
     if (event.button === 0) {
       authContext.room.send('player-input', 'rotate-left');
     }
@@ -91,7 +96,6 @@ export function Game() {
       authContext.room.send('player-input', 'rotate-right');
     }
   };
-
   return (
     <div className="GameScreen" onClick={rotateBlock} onContextMenu={rotateBlock}>
       <div ref={boxRef} style={{width: '100%', height: '100%'}}>
