@@ -100,7 +100,7 @@ export class State extends Schema {
     return startBlocks;
   }
 
-  _calculateBodyDeltas(event: IEvent<Engine | null>) {
+  _calculateBodyDeltas(_event: IEvent<Engine | null>) {
     const updates: Array<{id?: number; x?: number; y?: number; rotation?: number}> = [];
     for (const body of this.engine.world.bodies) {
       // remove the body if it is below the floor.
@@ -197,14 +197,12 @@ export class State extends Schema {
     for (const pair of event.pairs) {
       for (const [sessionId, blockId] of this.controlledBlocks) {
         if (pair.bodyA.id === blockId || pair.bodyB.id === blockId) {
-          const oldBlock = pair.bodyA.id === blockId ? pair.bodyA : pair.bodyB;
           const newBlock = this._newBlock(75, 0);
           this.controlledBlocks.set(sessionId, newBlock.id);
           newBlocksData.push(newBlock);
           // Move the player input delta to the new block.
           this.playerInputDelta.set(newBlock.id, this.playerInputDelta.get(blockId)!);
           this.playerInputDelta.delete(blockId);
-
         }
       }
     }
