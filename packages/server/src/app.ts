@@ -57,7 +57,6 @@ router.post('/token', async (req: Request, res: Response) => {
   const {access_token} = (await response.json()) as {
     access_token: string;
   };
-  console.log(`Received token: code ${req.body.code}, id: ${process.env.VITE_CLIENT_ID}, token: ${access_token}`);
   res.send({access_token});
 });
 
