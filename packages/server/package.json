@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm-run-all build start:dev",
     "start:dev": "node ./dist/server/src/app.js",
-    "start:prod": "NODE_ENV=production PORT=3000 node ./dist/app.js",
+    "start:prod": "NODE_ENV=production PORT=3000 node ./dist/server/src/app.js",
     "dev": "nodemon --watch src -e ts,ejs --exec $npm_execpath start",
     "dev:win": "nodemon --watch src -e ts,ejs --exec `%npm_execpath% start`",
     "build": "npm-run-all build:clean build:tsc",
@@ -27,6 +27,7 @@
     "express": "^4.17.1",
     "http-proxy-middleware": "^2.0.6",
     "matter-js": "^0.19.0",
+    "node": "^22.0.0",
     "uwebsockets-express": "^1.2.2"
   },
   "devDependencies": {
