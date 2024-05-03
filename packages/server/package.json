@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "npm-run-all build start:dev",
-    "start:dev": "node ./dist/app.js",
-    "start:prod": "NODE_ENV=production PORT=3000 node ./dist/app.js",
+    "start:dev": "node ./dist/server/src/app.js",
+    "start:prod": "NODE_ENV=production PORT=3000 node ./dist/server/src/app.js",
     "dev": "nodemon --watch src -e ts,ejs --exec $npm_execpath start",
     "dev:win": "nodemon --watch src -e ts,ejs --exec `%npm_execpath% start`",
     "build": "npm-run-all build:clean build:tsc",

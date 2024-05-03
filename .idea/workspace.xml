@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3695db25-00ff-495d-927d-1c882bff7518" name="Changes" comment="Updated layout, added walls and separate platforms for players.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/client/src/components/Block.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/client/src/components/Block.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/client/src/components/GameScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/client/src/components/GameScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/client/src/components/MainMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/client/src/components/MainMenu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/server/src/entities/State.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/server/src/entities/State.ts" afterDir="false" />
-    </list>
+    <list default="true" id="3695db25-00ff-495d-927d-1c882bff7518" name="Changes" comment="Updated package.json for server" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,7 +82,7 @@
       <workItem from="1713959831128" duration="34093000" />
       <workItem from="1714477125668" duration="241000" />
       <workItem from="1714477529791" duration="17730000" />
-      <workItem from="1714684487140" duration="6812000" />
+      <workItem from="1714684487140" duration="7910000" />
     </task>
     <task id="LOCAL-00001" summary="setup">
       <option name="closed" value="true" />
@@ -194,7 +188,23 @@
       <option name="project" value="LOCAL" />
       <updated>1714747231200</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Updated layout, added walls and separate platforms for players.">
+      <option name="closed" value="true" />
+      <created>1714747382596</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1714747382596</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Updated package.json for server">
+      <option name="closed" value="true" />
+      <created>1714748282609</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1714748282609</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,6 +223,7 @@
     <MESSAGE value="Block Update:&#10;Fixed setting random block colours in getRandomBlock.ts" />
     <MESSAGE value="Updated dependencies and changed workflow to push to VPS server" />
     <MESSAGE value="Updated layout, added walls and separate platforms for players." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated layout, added walls and separate platforms for players." />
+    <MESSAGE value="Updated package.json for server" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated package.json for server" />
   </component>
 </project>
