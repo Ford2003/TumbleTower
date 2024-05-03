@@ -10,22 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Push
     steps:
-      - name: Connect to server and pull the latest changes
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          script: |
-            eval `ssh-agent -s`
-            ssh-add ${{ secrets.SSH_PRIVATE_KEY }}
-            cd tower
-            git pull
-            cd packages/client
-            npm install
-            cd ../server
-            npm install
-            cd ../..
-            npm run build
-            cp -r packages/client/dist/* /var/www/tower/client
-            pm2 start pm2.config.js
+      - name: Do nothing
