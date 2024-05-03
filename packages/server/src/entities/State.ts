@@ -30,6 +30,9 @@ export class State extends Schema {
   // Store player input to add onto block movement. key = blockId, value = block movement xy delta
   playerInputDelta: Map<number, {x: number; y: number}> = new Map();
 
+  // Store where each players new block should be spawned. key = sessionId, value = x position.
+  playerBlockStarts: Map<string, number> = new Map();
+
   // Init
   constructor(attributes: IState) {
     super();
@@ -79,20 +82,33 @@ export class State extends Schema {
     this.engine.gravity.y = 0;
     const startBlocks: IBlockData[] = [];
     let x = 75;
+    // Start with left most wall
+    const wall = Bodies.rectangle(x - 100, 200, 10, 200, {
+      isStatic: true,
+    });
+    World.add(this.engine.world, wall);
+    this.blockPositions.set(wall.id, {x: wall.position.x, y: wall.position.y, rotation: wall.angle});
     this.players.forEach((p) => {
       const block = this._newBlock(x, 0);
-      x += 75;
       this.controlledBlocks.set(p.sessionId, block.id);
       this.playerInputDelta.set(block.id, {x: 0, y: 0});
       startBlocks.push(block);
+      this.playerBlockStarts.set(p.sessionId, x);
+      // Create a floor.
+      const floor = Bodies.rectangle(x, 300, 100, 20, {
+        isStatic: true,
+      });
+      // 100 width, 75 + 50 + 50 + 50 + 50 = 225 so add 150 to x. 100 gap between floors (50 to wall 50 to floor).
+      World.add(this.engine.world, floor);
+      this.blockPositions.set(floor.id, {x: floor.position.x, y: floor.position.y, rotation: floor.angle});
+      // Add small walls between each player.
+      const wall = Bodies.rectangle(x + 100, 200, 10, 200, {
+        isStatic: true,
+      });
+      World.add(this.engine.world, wall);
+      this.blockPositions.set(wall.id, {x: wall.position.x, y: wall.position.y, rotation: wall.angle});
+      x += 200;
     });
-    // Create a floor.
-    // TODO: create floors for each player, + walls between each player.
-    const floor = Bodies.rectangle(150, 300, 300, 20, {
-      isStatic: true,
-    });
-    World.add(this.engine.world, floor);
-    this.blockPositions.set(floor.id, {x: floor.position.x, y: floor.position.y, rotation: floor.angle});
     console.log('Game start: ', this.controlledBlocks, this.blockPositions);
     Events.on(this.engine, 'beforeUpdate', this.applyPlayerMovement);
     // Run the engine.
@@ -100,7 +116,7 @@ export class State extends Schema {
     return startBlocks;
   }
 
-  _calculateBodyDeltas(event: IEvent<Engine | null>) {
+  _calculateBodyDeltas(_event: IEvent<Engine | null>) {
     const updates: Array<{id?: number; x?: number; y?: number; rotation?: number}> = [];
     for (const body of this.engine.world.bodies) {
       // remove the body if it is below the floor.
@@ -186,7 +202,7 @@ export class State extends Schema {
     for (const block of this.engine.world.bodies) {
       if (!this.playerInputDelta.has(block.id)) {
         // TODO: Update gravity scalar to be better tuned.
-        Body.applyForce(block, block.position, {x: 0, y: 0.0005 * block.mass});
+        Body.applyForce(block, block.position, {x: 0, y: 0.0004 * block.mass});
       }
     }
   }
@@ -197,14 +213,12 @@ export class State extends Schema {
     for (const pair of event.pairs) {
       for (const [sessionId, blockId] of this.controlledBlocks) {
         if (pair.bodyA.id === blockId || pair.bodyB.id === blockId) {
-          const oldBlock = pair.bodyA.id === blockId ? pair.bodyA : pair.bodyB;
-          const newBlock = this._newBlock(75, 0);
+          const newBlock = this._newBlock(this.playerBlockStarts.get(sessionId)!, 0);
           this.controlledBlocks.set(sessionId, newBlock.id);
           newBlocksData.push(newBlock);
           // Move the player input delta to the new block.
           this.playerInputDelta.set(newBlock.id, this.playerInputDelta.get(blockId)!);
           this.playerInputDelta.delete(blockId);
-
         }
       }
     }

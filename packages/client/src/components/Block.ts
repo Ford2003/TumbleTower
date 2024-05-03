@@ -61,6 +61,7 @@ export function Block({type, x, y, rotation, colour}: IBlock, isStatic: boolean,
     5,
     0.01
   );
+  // Body.scale(blockBody, 2, 2);
   Body.rotate(blockBody, rotation);
   Body.setVelocity(blockBody, {x: 0, y: 1});
   console.log(`Block Body: ${blockBody}, position: ${blockBody.position}, rotation: ${rotation}, id: ${blockBody.id}`);

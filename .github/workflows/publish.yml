@@ -10,26 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Push
     steps:
-      - name: git-checkout
-        uses: actions/checkout@v4
-
-      - name: Install all dependencies
-        run: |
-          cd packages/client && npm install
-          cd ../server && npm install
-          cd ../..
-
-      - name: Build
-        run: npm run build # The build command of your project
-
-      - name: Copy client dist to server dist
-        run: cp -r packages/client/dist/* packages/server/dist
-
-      - name: Push Build
-        uses: s0/git-publish-subdir-action@develop
-        env:
-          REPO: self
-          BRANCH: build # The branch name where you want to push the assets
-          FOLDER: packages/server/dist # The directory where your assets are generated
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
-          MESSAGE: "Build: ({sha}) {msg}" # The commit message
+      - name: Connect to server and pull the latest changes
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            eval `ssh-agent -s`
+            ssh-add ${{ secrets.SSH_PRIVATE_KEY }}
+            cd tower
+            git pull
+            cd packages/client
+            npm install
+            cd ../server
+            npm install
+            cd ../..
+            npm run build
+            cp -r packages/client/dist/* /var/www/tower/client
+            pm2 start pm2.config.js
