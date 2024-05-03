@@ -48,6 +48,14 @@ export function MainMenu({onStartGame}: ButtonProps) {
             Images Loaded: {imagesLoaded} / {totalImages}
           </p>
         </div>
+        <div>
+          <p>
+            Use a and d or the arrow keys to move left/right.
+          </p>
+          <p>
+            Use the mouse to rotate.
+          </p>
+        </div>
       </div>
     </div>
   );

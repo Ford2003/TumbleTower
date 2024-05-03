@@ -16,6 +16,7 @@ export function Game() {
   const [moveRightPressed, setMoveRightPressed] = React.useState(false);
   // React Contexts.
   const authContext = useAuthenticatedContext();
+  const players = usePlayers();
 
   // On page load set up client: Mock Engine + renderer + floors + listeners.
   React.useEffect(() => {
@@ -33,21 +34,44 @@ export function Game() {
       },
     });
     Render.run(render);
-    // TODO: Create platforms for each player, rather than a single long floor.
-    const floor = Bodies.rectangle(150, 300, 300, 20, {
+    let x = 75;
+    const floors: Body[] = [];
+    // Start with leftmost wall.
+    const wall = Bodies.rectangle(x - 100, 200, 10, 200, {
       isStatic: true,
       render: {
-        fillStyle: 'yellow',
-      },
+        fillStyle: 'red',
+      }
     });
-    World.add(mockEngine.world, floor);
+    World.add(mockEngine.world, wall);
+    // For each player create a floor and wall on the right the player between the walls.
+    for (const _ in players) {
+      const floor = Bodies.rectangle(x, 300, 100, 20, {
+        isStatic: true,
+        render: {
+          fillStyle: 'yellow',
+        }
+      });
+      floors.push(floor);
+      World.add(mockEngine.world, floor);
+      // Add small walls between each player.
+      const wall = Bodies.rectangle(x + 100, 200, 10, 200, {
+        isStatic: true,
+        render: {
+          fillStyle: 'red',
+        }
+      });
+      World.add(mockEngine.world, wall);
+      x += 200;
+    }
+
     const runner = Runner.create();
     Runner.run(runner, mockEngine);
     // Set up listener for block creation.
     authContext.room.onMessage('block-created', (data: {block: IBlockData}) => {
       // Create identical block in same location as static.
       const newBlock = Block(data.block, true, mockEngine, data.block.id);
-      Render.lookAt(render, [newBlock, floor], {x: 50, y: 50}, true);
+      Render.lookAt(render, [newBlock, ...floors], {x: 50, y: 50}, true);
     });
     // Set up listener for block updates.
     authContext.room.onMessage(

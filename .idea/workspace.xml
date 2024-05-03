@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="3695db25-00ff-495d-927d-1c882bff7518" name="Changes" comment="Updated dependencies and changed workflow to push to VPS server">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/client/src/components/Block.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/client/src/components/Block.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/client/src/components/GameScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/client/src/components/GameScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/client/src/components/MainMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/client/src/components/MainMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/server/src/entities/State.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/server/src/entities/State.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,18 +19,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Ford2003"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Ford2003&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Ford2003/TumbleTower.git",
-    "accountId": "2169105d-2a88-4c80-bd7c-a908b4c50212"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Ford2003/TumbleTower.git&quot;,
+    &quot;accountId&quot;: &quot;2169105d-2a88-4c80-bd7c-a908b4c50212&quot;
   }
-}]]></component>
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -54,7 +57,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "settings.typescriptcompiler",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Language Defaults",
     "ts.external.directory.path": "C:\\Users\\Tommy Ford\\PyCharmProjects\\TumbleTower\\packages\\client\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -85,6 +88,7 @@
       <workItem from="1713959831128" duration="34093000" />
       <workItem from="1714477125668" duration="241000" />
       <workItem from="1714477529791" duration="17730000" />
+      <workItem from="1714684487140" duration="6174000" />
     </task>
     <task id="LOCAL-00001" summary="setup">
       <option name="closed" value="true" />
@@ -174,7 +178,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714684281713</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Updated dependencies and changed workflow to push to VPS server">
+      <option name="closed" value="true" />
+      <created>1714684521782</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1714684521782</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
