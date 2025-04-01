@@ -16,4 +16,4 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script_path: tower/build.sh
+          script: cd tower && ./build.sh
