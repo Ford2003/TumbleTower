@@ -16,8 +16,4 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: |
-            eval `ssh-agent -s`
-            ssh-add ${{ secrets.SSH_PRIVATE_KEY }}
-            cd tower
-            ./build.sh
+          script_path: tower/build.sh
