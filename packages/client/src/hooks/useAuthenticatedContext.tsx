@@ -67,6 +67,7 @@ function useAuthenticatedContextSetup() {
         prompt: 'none',
         // More info on scopes here: https://discord.com/developers/docs/topics/oauth2#shared-resources-oauth2-scopes
         scope: [
+          'applications.commands',
           // "applications.builds.upload",
           // "applications.builds.read",
           // "applications.store.update",
@@ -90,7 +91,7 @@ function useAuthenticatedContextSetup() {
       });
 
       // Retrieve an access_token from your embedded app's server
-      const response = await fetch('/api/token', {
+      const response = await fetch('/.proxy/api/token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +109,7 @@ function useAuthenticatedContextSetup() {
 
       // Get guild specific nickname and avatar, and fallback to user name and avatar
       const guildMember: IGuildsMembersRead | null = await fetch(
-        `/discord/api/users/@me/guilds/${discordSdk.guildId}/member`,
+        `/.proxy/discord/api/users/@me/guilds/${discordSdk.guildId}/member`,
         {
           method: 'get',
           headers: {Authorization: `Bearer ${access_token}`},
@@ -122,7 +123,7 @@ function useAuthenticatedContextSetup() {
       // Done with discord-specific setup
 
       // Now we create a colyseus client
-      const wsUrl = `wss://${location.host}/api/colyseus`;
+      const wsUrl = `wss://${location.host}/.proxy/api/colyseus`;
       const client = new Client(wsUrl);
 
       let roomName = 'Channel';
