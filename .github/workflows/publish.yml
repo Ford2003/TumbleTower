@@ -11,7 +11,7 @@ jobs:
     name: Build and Push
     steps:
       - name: Connect to server and pull the latest changes
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
