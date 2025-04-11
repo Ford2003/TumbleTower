@@ -5,13 +5,16 @@ on:
     branches:
       - '*' # Trigger on all pull requests
     paths-ignore:
-      - 'main' # Or your main/default branch name
+      - 'main'
 
 jobs:
   build:
     if: github.event.pull_request.head.ref != github.event.pull_request.base.ref # Ensure it's not a merge commit on the base branch
     runs-on: ubuntu-latest
-
+    
+    permissions:
+      pull-requests: write
+          
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -40,6 +43,7 @@ jobs:
 
       - name: Check build status and report
         uses: actions/github-script@v7
+          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BUILD_OUTCOME: ${{ steps.build-run.outcome }}
@@ -47,19 +51,8 @@ jobs:
           script: |
             const buildStatus = process.env.BUILD_OUTCOME;
             const prNumber = context.payload.pull_request.number;
-            const commentBodySuccess = '✅ Build succeeded!';
-            const commentBodyFailure = '❌ Build failed. Please check the workflow logs.';
             const tagSuccess = 'build:success';
             const tagFailure = 'build:failure';
-
-            async function addComment(body) {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                body: body
-              });
-            }
 
             async function addTag(tagName) {
               await github.rest.issues.addLabels({
@@ -88,12 +81,10 @@ jobs:
 
             if (buildStatus === 'success') {
               console.log('Build succeeded!');
-              await addComment(commentBodySuccess);
               await addTag(tagSuccess);
               await removeTag(tagFailure);
             } else {
               console.log('Build failed!');
-              await addComment(commentBodyFailure);
               await addTag(tagFailure);
               await removeTag(tagSuccess);
             }
