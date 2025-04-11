@@ -47,19 +47,8 @@ jobs:
           script: |
             const buildStatus = process.env.BUILD_OUTCOME;
             const prNumber = context.payload.pull_request.number;
-            const commentBodySuccess = '✅ Build succeeded!';
-            const commentBodyFailure = '❌ Build failed. Please check the workflow logs.';
             const tagSuccess = 'build:success';
             const tagFailure = 'build:failure';
-
-            async function addComment(body) {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                body: body
-              });
-            }
 
             async function addTag(tagName) {
               await github.rest.issues.addLabels({
@@ -88,12 +77,10 @@ jobs:
 
             if (buildStatus === 'success') {
               console.log('Build succeeded!');
-              await addComment(commentBodySuccess);
               await addTag(tagSuccess);
               await removeTag(tagFailure);
             } else {
               console.log('Build failed!');
-              await addComment(commentBodyFailure);
               await addTag(tagFailure);
               await removeTag(tagSuccess);
             }
