@@ -1,0 +1,100 @@
+name: Dependabot Build Check
+
+on:
+  pull_request:
+    branches:
+      - '*' # Trigger on all pull requests
+    paths-ignore:
+      - 'main' # Or your main/default branch name
+
+jobs:
+  build:
+    if: github.event.pull_request.head.ref != github.event.pull_request.base.ref # Ensure it's not a merge commit on the base branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }} # Checkout the specific commit of the PR branch
+
+      - name: Set up Node environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.1.0'
+
+      - name: Install client dependencies
+        run: |
+          cd packages/client
+          npm install
+
+      - name: Install server dependencies
+        run: |
+          cd packages/server
+          npm install
+
+      - name: Build server
+        run: npm run build
+        id: build-run
+        continue-on-error: true
+
+      - name: Check build status and report
+        uses: actions/github-script@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          script: |
+            const github = require('@actions/github');
+            const context = github.context;
+            const buildStatus = ${{ steps.build-run.outcome }};
+            const prNumber = context.payload.pull_request.number;
+            const commentBodySuccess = '✅ Build succeeded!';
+            const commentBodyFailure = '❌ Build failed. Please check the workflow logs.';
+            const tagSuccess = 'build:success';
+            const tagFailure = 'build:failure';
+
+            async function addComment(body) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: body
+              });
+            }
+
+            async function addTag(tagName) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: [tagName]
+              });
+            }
+
+            async function removeTag(tagName) {
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  name: tagName
+                });
+              } catch (error) {
+                // Ignore if the label doesn't exist
+                if (error.status !== 404) {
+                  throw error;
+                }
+              }
+            }
+
+            if (buildStatus === 'success') {
+              console.log('Build succeeded!');
+              await addComment(commentBodySuccess);
+              await addTag(tagSuccess);
+              await removeTag(tagFailure);
+            } else {
+              console.log('Build failed!');
+              await addComment(commentBodyFailure);
+              await addTag(tagFailure);
+              await removeTag(tagSuccess);
+            }
