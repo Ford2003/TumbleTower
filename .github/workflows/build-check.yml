@@ -44,8 +44,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            const github = require('@actions/github');
-            const context = github.context;
             const buildStatus = ${{ steps.build-run.outcome }};
             const prNumber = context.payload.pull_request.number;
             const commentBodySuccess = '✅ Build succeeded!';
