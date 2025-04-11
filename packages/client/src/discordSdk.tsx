@@ -18,12 +18,12 @@ if (isEmbedded) {
   const mockGuildId = getOverrideOrRandomSessionValue('guild_id');
   const mockChannelId = getOverrideOrRandomSessionValue('channel_id');
 
-  discordSdk = new DiscordSDKMock(import.meta.env.VITE_CLIENT_ID, mockGuildId, mockChannelId);
+  discordSdk = new DiscordSDKMock(import.meta.env.VITE_CLIENT_ID, mockGuildId, mockChannelId, "location_id");
   const discriminator = String(mockUserId.charCodeAt(0) % 5);
 
   discordSdk._updateCommandMocks({
     authenticate: async () => {
-      return await {
+      return {
         access_token: 'mock_token',
         user: {
           username: mockUserId,
