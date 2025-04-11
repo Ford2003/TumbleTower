@@ -42,9 +42,10 @@ jobs:
         uses: actions/github-script@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_OUTCOME: ${{ steps.build-run.outcome }}
         with:
           script: |
-            const buildStatus = ${{ steps.build-run.outcome }};
+            const buildStatus = process.env.BUILD_OUTCOME;
             const prNumber = context.payload.pull_request.number;
             const commentBodySuccess = '✅ Build succeeded!';
             const commentBodyFailure = '❌ Build failed. Please check the workflow logs.';
