@@ -1,3 +1,4 @@
+
 import {Schema, MapSchema, type} from '@colyseus/schema';
 import {TPlayerOptions, Player} from './Player';
 import {Engine, Runner, IEvent, Bodies, World, Events, Body, IEventCollision} from 'matter-js';
@@ -77,6 +78,19 @@ export class State extends Schema {
     return {...blockData, id: block.id};
   }
 
+  runEngine(fps: number = 60) {
+    const targetDelta = 1000 / fps; // Calculate the target time step
+    let previousTime = 0;
+
+    setInterval(() => {
+      const currentTime = Date.now();
+      const deltaTime = currentTime - previousTime;
+      previousTime = currentTime;
+
+      Runner.tick(this.runner, this.engine, deltaTime);
+    }, targetDelta); // Use the target delta for the interval
+  }
+
   startGame() {
     // Create a block for each player.
     this.engine.gravity.y = 0;
@@ -112,7 +126,7 @@ export class State extends Schema {
     console.log('Game start: ', this.controlledBlocks, this.blockPositions);
     Events.on(this.engine, 'beforeUpdate', this.applyPlayerMovement);
     // Run the engine.
-    Runner.run(this.runner, this.engine);
+    this.runEngine(process.env.SERVER_FPS | 60);
     return startBlocks;
   }
 

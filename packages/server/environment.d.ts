@@ -6,6 +6,7 @@ declare global {
       NODE_ENV: 'development' | 'production';
       PORT?: string;
       PWD: string;
+      SERVER_FPS: number;
     }
   }
 }
