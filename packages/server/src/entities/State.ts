@@ -126,7 +126,7 @@ export class State extends Schema {
     console.log('Game start: ', this.controlledBlocks, this.blockPositions);
     Events.on(this.engine, 'beforeUpdate', this.applyPlayerMovement);
     // Run the engine.
-    this.runEngine(process.env.SERVER_FPS | 60);
+    this.runEngine(process.env.SERVER_FPS === undefined ? 60 : process.env.SERVER_FPS);
     return startBlocks;
   }
 
