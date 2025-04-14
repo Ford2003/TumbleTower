@@ -42,6 +42,7 @@ export class State extends Schema {
     this._calculateBodyDeltas = this._calculateBodyDeltas.bind(this);
     this.applyPlayerMovement = this.applyPlayerMovement.bind(this);
     this._handleCollisions = this._handleCollisions.bind(this);
+    this.runEngine = this.runEngine.bind(this);
   }
 
   private _getPlayer(sessionId: string): Player | undefined {
@@ -80,7 +81,7 @@ export class State extends Schema {
 
   runEngine(fps: number = 60) {
     const targetDelta = 1000 / fps; // Calculate the target time step
-    let previousTime = 0;
+    let previousTime = Date.now();
 
     setInterval(() => {
       const currentTime = Date.now();
@@ -88,6 +89,7 @@ export class State extends Schema {
       previousTime = currentTime;
 
       Runner.tick(this.runner, this.engine, deltaTime);
+      console.log(`Runner ticked after ${deltaTime} seconds`);
     }, targetDelta); // Use the target delta for the interval
   }
 
