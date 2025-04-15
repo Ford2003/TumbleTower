@@ -42,7 +42,6 @@ export class State extends Schema {
     this._calculateBodyDeltas = this._calculateBodyDeltas.bind(this);
     this.applyPlayerMovement = this.applyPlayerMovement.bind(this);
     this._handleCollisions = this._handleCollisions.bind(this);
-    this.runEngine = this.runEngine.bind(this);
   }
 
   private _getPlayer(sessionId: string): Player | undefined {
@@ -77,20 +76,6 @@ export class State extends Schema {
     this.blockPositions.set(block.id, {x: blockData.x, y: blockData.y, rotation: blockData.rotation});
     // Create IBlockData for storage in controlledBlocks
     return {...blockData, id: block.id};
-  }
-
-  runEngine(fps: number = 60) {
-    const targetDelta = 1000 / fps; // Calculate the target time step
-    let previousTime = Date.now();
-
-    setInterval(() => {
-      const currentTime = Date.now();
-      const deltaTime = currentTime - previousTime;
-      previousTime = currentTime;
-
-      Runner.tick(this.runner, this.engine, deltaTime);
-      console.log(`Runner ticked after ${deltaTime} seconds`);
-    }, targetDelta); // Use the target delta for the interval
   }
 
   startGame() {
@@ -128,7 +113,7 @@ export class State extends Schema {
     console.log('Game start: ', this.controlledBlocks, this.blockPositions);
     Events.on(this.engine, 'beforeUpdate', this.applyPlayerMovement);
     // Run the engine.
-    this.runEngine(Number(process.env.SERVER_FPS || '60'));
+    Runner.run(this.runner, this.engine);
     return startBlocks;
   }
 
