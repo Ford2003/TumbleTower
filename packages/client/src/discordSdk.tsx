@@ -1,4 +1,4 @@
-import {DiscordSDK, DiscordSDKMock} from '@discord/embedded-app-sdk';
+import {DiscordSDK, DiscordSDKMock, patchUrlMappings} from '@discord/embedded-app-sdk';
 
 const queryParams = new URLSearchParams(window.location.search);
 const isEmbedded = queryParams.get('frame_id') != null;
@@ -7,6 +7,7 @@ let discordSdk: DiscordSDK | DiscordSDKMock;
 
 if (isEmbedded) {
   discordSdk = new DiscordSDK(import.meta.env.VITE_CLIENT_ID);
+  patchUrlMappings([]);
 } else {
   // We're using session storage for user_id, guild_id, and channel_id
   // This way the user/guild/channel will be maintained until the tab is closed, even if you refresh

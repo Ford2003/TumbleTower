@@ -19,21 +19,26 @@ export class StateHandlerRoom extends Room<State> {
 
     this.onMessage('start-game-requested', () => {
       this.broadcast('game-started');
-      // On game start - create the engine and starting blocks.
-      const startBlocks = this.state.startGame();
-      // For each block created, broadcast the block to all clients.
-      for (const block of startBlocks) {
-        this.broadcast('block-created', {block: block});
-      }
-      this.OnEngineUpdate = this.OnEngineUpdate.bind(this);
-      Events.on(this.state.engine, 'afterUpdate', this.OnEngineUpdate);
-      this.onEngineCollision = this.onEngineCollision.bind(this);
-      Events.on(this.state.engine, 'collisionStart', this.onEngineCollision);
+      // wait 1 seconds before creating the initial blocks for the client to load in the game screen
+      setTimeout(this.setupBlocks.bind(this), 1000);
     });
 
     this.onMessage('player-input', (client, message: string) => {
       this.state.setPlayerInput(client.sessionId, message);
     });
+  }
+
+  setupBlocks() {
+    // On game start - create the engine and starting blocks.
+    const startBlocks = this.state.startGame();
+    // For each block created, broadcast the block to all clients.
+    for (const block of startBlocks) {
+      this.broadcast('block-created', {block: block});
+    }
+    this.OnEngineUpdate = this.OnEngineUpdate.bind(this);
+    Events.on(this.state.engine, 'afterUpdate', this.OnEngineUpdate);
+    this.onEngineCollision = this.onEngineCollision.bind(this);
+    Events.on(this.state.engine, 'collisionStart', this.onEngineCollision);
   }
 
   OnEngineUpdate(event: IEvent<Engine | null>) {

@@ -12,6 +12,8 @@ export default defineConfig({
   envDir: '../../',
   server: {
     port: 3000,
+    host: "0.0.0.0",
+    allowedHosts: true,
     proxy: {
       '/api': {
         target: 'http://localhost:3001',
@@ -23,6 +25,8 @@ export default defineConfig({
     },
     hmr: {
       clientPort: 443,
+      protocol: "wss",
+      path: "/.proxy/"
     },
   },
 });

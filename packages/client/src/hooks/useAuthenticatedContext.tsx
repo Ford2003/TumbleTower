@@ -91,7 +91,7 @@ function useAuthenticatedContextSetup() {
       });
 
       // Retrieve an access_token from your embedded app's server
-      const response = await fetch('/.proxy/api/token', {
+      const response = await fetch('/api/token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

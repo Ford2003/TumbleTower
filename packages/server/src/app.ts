@@ -1,15 +1,3 @@
-// Polyfill for window.requestAnimationFrame and window.cancelAnimationFrame
-global["window"] = global.window || {};
-
-global.window.requestAnimationFrame = global.window.requestAnimationFrame || function(callback) {
-  const id = setTimeout(callback, 1000 / Number(process.env.SERVER_FPS || '60'));
-  return id;
-};
-
-global.window.cancelAnimationFrame = global.window.cancelAnimationFrame || function(id) {
-  clearTimeout(id);
-};
-
 import {MonitorOptions, monitor} from '@colyseus/monitor';
 import {Server} from 'colyseus';
 import fetch from 'cross-fetch';
