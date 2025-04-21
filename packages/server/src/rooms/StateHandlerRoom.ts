@@ -5,11 +5,11 @@ import {Events, IEvent, Engine, Runner, IEventCollision} from 'matter-js';
 
 export class StateHandlerRoom extends Room<State> {
   maxClients = 1000;
+  patchRate = 1000 / 120; // 120FPS sent to the client
 
   onCreate(options: IState) {
-    this.setState(new State(options));
+    this.state = new State(options);
 
-    // Here's where we would add handlers for updating state
     this.onMessage('ready-up', (client, message) => {
       // on player ready up - update player state and check if all players are ready.
       this.state.ready(client.sessionId, message);
@@ -20,7 +20,8 @@ export class StateHandlerRoom extends Room<State> {
     this.onMessage('start-game-requested', () => {
       this.broadcast('game-started');
       // wait 1 seconds before creating the initial blocks for the client to load in the game screen
-      setTimeout(this.setupBlocks.bind(this), 1000);
+      // TODO: Add use message 'loaded-in' from client to determine when every player is loaded in to start the game.
+      this.clock.setTimeout(this.setupBlocks.bind(this), 1000);
     });
 
     this.onMessage('player-input', (client, message: string) => {
@@ -29,33 +30,25 @@ export class StateHandlerRoom extends Room<State> {
   }
 
   setupBlocks() {
-    // On game start - create the engine and starting blocks.
-    const startBlocks = this.state.startGame();
-    // For each block created, broadcast the block to all clients.
-    for (const block of startBlocks) {
-      this.broadcast('block-created', {block: block});
-    }
-    this.OnEngineUpdate = this.OnEngineUpdate.bind(this);
-    Events.on(this.state.engine, 'afterUpdate', this.OnEngineUpdate);
-    this.onEngineCollision = this.onEngineCollision.bind(this);
-    Events.on(this.state.engine, 'collisionStart', this.onEngineCollision);
+    // On game start - create the engine and starting blocks and add event listeners.
+    Events.on(this.state.engine, 'beforeUpdate', this.applyPlayerMovement.bind(this));
+    Events.on(this.state.engine, 'afterUpdate', this.onEngineUpdate.bind(this));
+    Events.on(this.state.engine, 'collisionStart', this.onEngineCollision.bind(this));
+
+    this.state.startGame();
   }
 
-  OnEngineUpdate(event: IEvent<Engine | null>) {
+  applyPlayerMovement() {
+    return this.state.applyPlayerMovementAndGravity();
+  }
+
+  onEngineUpdate(event: IEvent<Engine | null>) {
     // Update the state of the blocks.
-    const updates = this.state._calculateBodyDeltas(event);
-    // Broadcast the updates to all clients, in chunks of 20 blocks.
-    for (let i = 0; i < updates.length; i += 20) {
-      this.broadcast('block-updates', updates.slice(i, i + 20));
-    }
+    this.state.updateBodyPositions(event);
   }
 
   onEngineCollision(event: IEventCollision<Engine>) {
-    const newBlocks = this.state._handleCollisions(event);
-    // For each block created, broadcast the block to all clients.
-    for (const block of newBlocks) {
-      this.broadcast('block-created', {block: block});
-    }
+    this.state.handleCollisions(event);
   }
 
   onAuth(_client: any, _options: any, _req: any) {

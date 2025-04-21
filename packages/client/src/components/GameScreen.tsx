@@ -2,10 +2,9 @@ import * as React from 'react';
 // import './GameScreen.css';
 import {usePlayers} from '../hooks/usePlayers';
 import {useAuthenticatedContext} from '../hooks/useAuthenticatedContext';
-import {Player} from './Player';
 import {Engine, Runner, Render, Bodies, World, Body} from 'matter-js';
-import {IBlockData} from '../../../server/src/shared/Constants';
 import {Block} from './Block';
+import {getStateCallbacks} from 'colyseus.js';
 
 export function Game() {
   // React References
@@ -67,25 +66,34 @@ export function Game() {
 
     const runner = Runner.create();
     Runner.run(runner, mockEngine);
-    // Set up listener for block creation.
-    authContext.room.onMessage('block-created', (data: {block: IBlockData}) => {
-      // Create identical block in same location as static.
-      const newBlock = Block(data.block, true, mockEngine, data.block.id);
+
+    // TODO: Add cleanup function to remove listeners.
+    // Set up state listeners and callbacks.
+    const stateCallbacks = getStateCallbacks(authContext.room);
+    stateCallbacks(authContext.room.state).blockPositions.onAdd((block, blockId) => {
+      console.log(`Block ${blockId} added with ID = ${Number(block.blockId)}`);
+      const newBlock = Block({type: block.blockType, x: block.x, y: block.y, colour: block.colour, rotation: block.rotation}, true, mockEngine, Number(block.blockId));
       Render.lookAt(render, [newBlock, ...floors], {x: 50, y: 50}, true);
-    });
-    // Set up listener for block updates.
-    authContext.room.onMessage(
-      'block-updates',
-      (data: Array<{id: number; x?: number; y?: number; rotation?: number}>) => {
-        for (const update of data) {
-          const body = mockEngine.world.bodies.find((b) => b.id === update.id);
-          if (body) {
-            Body.translate(body, {x: update.x || 0, y: update.y || 0});
-            Body.rotate(body, update.rotation || 0);
-          }
+
+      stateCallbacks(block).onChange(() => {
+        const body = mockEngine.world.bodies.find((b) => String(b.id) === block.blockId);
+        if (body) {
+          Body.translate(body, {x: block.x - body.position.x, y: block.y - body.position.y});
+          Body.rotate(body, (block.rotation - body.angle) % (2 * Math.PI));
+        } else {
+          console.log(`Block ${blockId} not found`);
         }
+      });
+    });
+
+    stateCallbacks(authContext.room.state).blockPositions.onRemove((block, blockId) => {
+      console.log(`Block ${blockId} removed`);
+      const body = mockEngine.world.bodies.find((b) => String(b.id) === blockId);
+      if (body) {
+        World.remove(mockEngine.world, body);
       }
-    );
+    });
+
     // Set up input listeners for player movement. Send a single event to the server for movement-start and
     // movement end.
     document.addEventListener('keydown', (event) => {
@@ -113,9 +121,11 @@ export function Game() {
   // Click event callback for both left and right click to rotate the block.
   const rotateBlock = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
+    // Left click rotates left
     if (event.button === 0) {
       authContext.room.send('player-input', 'rotate-left');
     }
+    // Right click rotates right
     if (event.button === 2) {
       authContext.room.send('player-input', 'rotate-right');
     }

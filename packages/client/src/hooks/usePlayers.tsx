@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Player as PlayerState} from '../../../server/src/entities/Player';
 import {useAuthenticatedContext} from './useAuthenticatedContext';
+import {getStateCallbacks} from "colyseus.js";
 
 const PlayersContext = React.createContext<PlayerState[]>([]);
 
@@ -25,7 +26,8 @@ function usePlayersContextSetup() {
 
   React.useEffect(() => {
     try {
-      authenticatedContext.room.state.players.onAdd((player, _key) => {
+      const stateCallbacks = getStateCallbacks(authenticatedContext.room);
+      stateCallbacks(authenticatedContext.room.state).players.onAdd((player, _key) => {
         setPlayers((players) => [...players.filter((p) => p.userId !== player.userId), player]);
         function handlePropertyChange(field: string, value: unknown) {
           setPlayers((players) =>
@@ -41,14 +43,14 @@ function usePlayersContextSetup() {
         }
 
         // there is likely a more clever way to do this
-        player.listen('avatarUri', (value) => handlePropertyChange('avatarUri', value));
-        player.listen('name', (value) => handlePropertyChange('name', value));
-        player.listen('sessionId', (value) => handlePropertyChange('sessionId', value));
-        player.listen('ready', (value) => handlePropertyChange('ready', value));
-        player.listen('userId', (value) => handlePropertyChange('userId', value));
+        stateCallbacks(player).listen('avatarUri', (value) => handlePropertyChange('avatarUri', value));
+        stateCallbacks(player).listen('name', (value) => handlePropertyChange('name', value));
+        stateCallbacks(player).listen('sessionId', (value) => handlePropertyChange('sessionId', value));
+        stateCallbacks(player).listen('ready', (value) => handlePropertyChange('ready', value));
+        stateCallbacks(player).listen('userId', (value) => handlePropertyChange('userId', value));
       });
 
-      authenticatedContext.room.state.players.onRemove((player, _key) => {
+      stateCallbacks(authenticatedContext.room.state).players.onRemove((player, _key) => {
         setPlayers((players) => [...players.filter((p) => p.userId !== player.userId)]);
       });
 
