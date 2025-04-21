@@ -21,7 +21,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.1.2",
     "@types/uuid": "^10.0.0",
-    "@vitejs/plugin-react": "^4.0.0",
+    "@vitejs/plugin-react": "^4.4.1",
     "@types/matter-js": "^0.19.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
@@ -33,6 +33,10 @@
       "es6": true,
       "browser": true,
       "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
     }
   }
 }
