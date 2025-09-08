@@ -42,7 +42,7 @@ jobs:
         continue-on-error: true
 
       - name: Check build status and report
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
           
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
